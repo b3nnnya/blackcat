@@ -1,8 +1,7 @@
 import java.util.Random;
 
 /**
- * Motor lógico del juego de Ruleta (Aplicando SRP).
- * No contiene elementos visuales, ni menús, ni interacciones de consola.
+ * Motor lógico del juego de Ruleta
  */
 public class Ruleta {
 
