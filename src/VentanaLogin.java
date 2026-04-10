@@ -1,30 +1,23 @@
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- * Clase que representa la ventana de Login del Casino Black Cat.
- * Permite ingresar credenciales para acceder al sistema.
- */
 public class VentanaLogin {
 
     // --- Lista dinámica de usuarios ---
     public static final List<Usuario> USUARIOS = new ArrayList<>();
 
-    // --- UI Componentes ---
+    // --- Componentes UI ---
     private final JFrame frame = new JFrame("Login Casino Black Cat");
     private final JLabel lblUsuario = new JLabel("Usuario:");
     private final JTextField txtUsuario = new JTextField();
     private final JLabel lblClave = new JLabel("Clave:");
     private final JPasswordField txtClave = new JPasswordField();
+
+    // Botones
     private final JButton btnIngresar = new JButton("Ingresar");
     private final JButton btnRegistrar = new JButton("Registrar");
 
-    /**
-     * Constructor que inicializa la ventana de login.
-     */
     public VentanaLogin() {
         inicializarUsuarios();
         configurarVentana();
@@ -32,19 +25,17 @@ public class VentanaLogin {
         configurarEventos();
     }
 
-    // --- MÉTODOS DE CONFIGURACIÓN (Para mantener métodos cortos) ---
-
     private void inicializarUsuarios() {
         if (USUARIOS.isEmpty()) {
-            USUARIOS.add(new Usuario("benya", "1234", "Don Benya"));
-            USUARIOS.add(new Usuario("blackcat", "gato", "Black Cat"));
+            USUARIOS.add(new Usuario("admin", "1234", "Don Donnie"));
+            USUARIOS.add(new Usuario("jugador1", "gato", "Invitado Estrella"));
         }
     }
 
     private void configurarVentana() {
         frame.setSize(300, 200);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(null); // Usamos null para posicionar por coordenadas
+        frame.setLayout(null);
         frame.setResizable(false);
     }
 
@@ -53,79 +44,57 @@ public class VentanaLogin {
         txtUsuario.setBounds(100, 20, 150, 25);
         lblClave.setBounds(30, 60, 80, 25);
         txtClave.setBounds(100, 60, 150, 25);
+
         btnIngresar.setBounds(40, 110, 100, 30);
         btnRegistrar.setBounds(150, 110, 100, 30);
+
         frame.add(lblUsuario); frame.add(txtUsuario);
         frame.add(lblClave); frame.add(txtClave);
-        frame.add(btnIngresar);
-        frame.add(btnRegistrar);
+        frame.add(btnIngresar); frame.add(btnRegistrar);
     }
 
     private void configurarEventos() {
-        btnIngresar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                login();
-            }
-        });
-        btnRegistrar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                abrirRegistro();
-            }
-        });
+        // Usamos expresiones lambda (->) que hacen el código más corto y limpio
+        btnIngresar.addActionListener(e -> login());
+        btnRegistrar.addActionListener(e -> abrirRegistro());
     }
 
-    // --- MÉTODOS DE LÓGICA PRINCIPAL ---
-
-    /**
-     * Muestra la ventana en pantalla.
-     * Debe centrarla y hacerla visible.
-     */
-    public void mostrarVentana() {
-        frame.setLocationRelativeTo(null); // Centra la ventana en la pantalla
-        frame.setVisible(true);
-    }
-
-    /**
-     * Maneja el evento de login al presionar el botón.
-     */
     private void login() {
-        String u = txtUsuario.getText();
+        String u = txtUsuario.getText().trim();
         String p = new String(txtClave.getPassword());
 
         String nombreUsuario = validarCredenciales(u, p);
         evaluarAcceso(nombreUsuario);
     }
 
-    /**
-     * Evalúa si dar acceso o mostrar error
-     */
     private void evaluarAcceso(String nombre) {
         if (!nombre.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "¡Bienvenido al Casino, " + nombre + "!");
-            frame.dispose(); // Cierra la ventana de login
-            Ruleta.menu(); // Abre la ruleta
+            frame.dispose(); // Cierra el login
+
+            // Abre el Menú Principal
+            new VentanaMenu(nombre).mostrarVentana();
         } else {
             JOptionPane.showMessageDialog(frame, "Credenciales incorrectas", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    /**
-     * Valida las credenciales del usuario contra el arreglo hardcoded.
-     */
     private String validarCredenciales(String u, String p) {
         for (Usuario user : USUARIOS) {
             if (user.validarCredenciales(u, p)) {
                 return user.getNombre();
             }
         }
-        return ""; // Retorna vacío si no encuentra coincidencia
+        return "";
     }
 
-    /**
-     * Abre la ventana de registro para crear un nuevo usuario.
-     */
-    void abrirRegistro() {
-        frame.dispose();
-        new VentanaRegistro().mostrarVentana();
+    private void abrirRegistro() {
+        frame.dispose(); // Cierra el login
+        new VentanaRegistro().mostrarVentana(); // Abre la ventana para crear cuenta
+    }
+
+    public void mostrarVentana() {
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }
