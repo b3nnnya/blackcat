@@ -1,3 +1,6 @@
+package Vista;
+
+import Modelo.Usuario;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 

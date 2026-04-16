@@ -1,3 +1,6 @@
+package Vista;
+
+import Modelo.Ruleta;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
@@ -69,7 +72,7 @@ public class VentanaJuego {
         // Vuelve al menú principal
         btnVolver.addActionListener(e -> {
             frame.dispose();
-            // TODO: new VentanaMenu().mostrarVentana();
+            //TODO: new VentanaMenu().mostrarVentana();
         });
     }
 

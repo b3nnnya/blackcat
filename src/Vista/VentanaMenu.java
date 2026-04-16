@@ -1,3 +1,5 @@
+package Vista;
+
 import javax.swing.*;
 import java.awt.Font;
 
