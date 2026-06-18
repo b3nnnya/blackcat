@@ -17,6 +17,9 @@ public class Usuario {
   }
 
   public boolean validarCredenciales(String u, String p) {
+    // Un usuario con username nulo o un intento con identificador nulo nunca
+    // puede autenticarse: se rechaza la operación en lugar de lanzar NPE.
+    if (this.username == null || u == null) return false;
     return this.username.equals(u) && this.password.equals(p);
   }
 
